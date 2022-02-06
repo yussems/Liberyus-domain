@@ -1,29 +1,16 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { auth } from "../firebase";
+
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUser } from "../utils/auth/createUser";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  
 
-
-  const handleSumbit = async (e) => {
-    
+  const handleSumbit =  (e) => {
     e.preventDefault();
-
-    try {
-      const newUser = await createUserWithEmailAndPassword(auth, email, password)
-setName(newUser.user.email)
-      
-    } catch (error) {
-      console.log(error)
-    }
-      
-
+    createUser(email,password)
   };
 
   return (
@@ -50,7 +37,6 @@ setName(newUser.user.email)
           />
           <button>send</button>
         </form>
-        {name}
       </div>
     </div>
   );
