@@ -7,14 +7,22 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-console.log(email,password);
+  const [name, setName] = useState("");
+  
+
+
   const handleSumbit = async (e) => {
     
     e.preventDefault();
 
-    const newUser = await createUserWithEmailAndPassword(auth, email, password)
+    try {
+      const newUser = await createUserWithEmailAndPassword(auth, email, password)
+setName(newUser.user.email)
       
-    return newUser
+    } catch (error) {
+      console.log(error)
+    }
+      
 
   };
 
@@ -42,6 +50,7 @@ console.log(email,password);
           />
           <button>send</button>
         </form>
+        {name}
       </div>
     </div>
   );
