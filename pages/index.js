@@ -17,17 +17,20 @@ export default function Home() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [born, setBorn] = useState("");
-  const [data, setData] = useState([]);
+  const [datas, setData] = useState([]);
 
   async function getdat() {
     const querySnapshot = await getDocs(collection(db, "users"));
     // .then(item => console.log(item.docs))
-    querySnapshot.docs.forEach((item) => console.log(item));
+    const alldata = [];
+    querySnapshot.docs.forEach((item) => {
+      alldata.push({ ...item.data() });
+    });
+    setData(alldata);
   }
   useEffect(() => {
-    getdat()
-  },[])
-  getdat();
+    getdat();
+  }, []);
   const handleSumbit = (e) => {
     e.preventDefault();
     signIn(email, password);
@@ -39,6 +42,7 @@ export default function Home() {
     e.preventDefault();
     domain(name, surname, born);
   };
+  console.log(datas);
 
   return (
     <div className={styles.container}>
@@ -86,8 +90,12 @@ export default function Home() {
           />
           <button>send</button>
         </form>
-
         <button onClick={handleclick}>deneme</button>
+      </div>
+      <div>
+        <ul>
+          {datas.map(item => <li>{item.first}</li>)}
+        </ul>
       </div>
     </div>
   );
