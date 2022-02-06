@@ -1,14 +1,15 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { useState } from "react";
-import { createUser, monitoringAuthState, signIn, signOff } from "../utils/auth/createUser";
-import { auth } from "../firebase";
+import { useEffect, useState } from "react";
+import { monitoringAuthState, signIn } from "../utils/auth/createUser";
+import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { domain } from "../utils/db/db";
 
+import { collection, getDocs } from "firebase/firestore";
 
-monitoringAuthState()
+monitoringAuthState();
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -16,22 +17,28 @@ export default function Home() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [born, setBorn] = useState("");
+  const [data, setData] = useState([]);
 
-  const handleSumbit =  (e) => {
-    e.preventDefault();
-    signIn(email,password)
-  };
-  const  handleclick = async() => {
-    await signOut(auth)
+  async function getdat() {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    // .then(item => console.log(item.docs))
+    querySnapshot.docs.forEach((item) => console.log(item));
   }
-
-
+  useEffect(() => {
+    getdat()
+  },[])
+  getdat();
+  const handleSumbit = (e) => {
+    e.preventDefault();
+    signIn(email, password);
+  };
+  const handleclick = async () => {
+    await signOut(auth);
+  };
   const handleDomain = (e) => {
     e.preventDefault();
-    domain(name,surname,born)
-
-
-  }
+    domain(name, surname, born);
+  };
 
   return (
     <div className={styles.container}>
@@ -58,7 +65,6 @@ export default function Home() {
           <button>send</button>
         </form>
 
-        
         <form onSubmit={handleDomain}>
           <label htmlFor="email">name</label>
           <input
@@ -80,8 +86,6 @@ export default function Home() {
           />
           <button>send</button>
         </form>
-
-
 
         <button onClick={handleclick}>deneme</button>
       </div>
