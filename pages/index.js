@@ -1,13 +1,13 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { monitoringAuthState, signIn } from "../utils/auth/createUser";
 import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { domain } from "../utils/db/db";
 
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 monitoringAuthState();
 
@@ -18,13 +18,14 @@ export default function Home() {
   const [surname, setSurname] = useState("");
   const [born, setBorn] = useState("");
   const [datas, setData] = useState([]);
+  const deleteRef= useRef()
 
   async function getdat() {
     const querySnapshot = await getDocs(collection(db, "users"));
     // .then(item => console.log(item.docs))
     const alldata = [];
     querySnapshot.docs.forEach((item) => {
-      alldata.push({ ...item.data() });
+      alldata.push({ ...item.data(), id: item.id });
     });
     setData(alldata);
   }
@@ -43,6 +44,12 @@ export default function Home() {
     domain(name, surname, born);
   };
   console.log(datas);
+
+  const handleDelete = (e) => {
+    const docRef = doc(db,'users',e.target.id)
+
+    deleteDoc(docRef)
+  }
 
   return (
     <div className={styles.container}>
@@ -94,7 +101,12 @@ export default function Home() {
       </div>
       <div>
         <ul>
-          {datas.map(item => <li>{item.first}</li>)}
+          {datas.map((item) => (
+            <div key={item.first}>
+              <li>{item.first}</li>
+              <button id={item.id} onClick={handleDelete}>sil</button>
+            </div>
+          ))}
         </ul>
       </div>
     </div>
