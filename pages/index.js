@@ -2,16 +2,25 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 import { useState } from "react";
-import { createUser } from "../utils/auth/createUser";
+import { createUser, monitoringAuthState, signIn, signOff } from "../utils/auth/createUser";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+
+
+monitoringAuthState()
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const handleSumbit =  (e) => {
     e.preventDefault();
-    createUser(email,password)
+    signIn(email,password )
   };
+  const  handleclick = async() => {
+    await signOut(auth)
+  }
 
   return (
     <div className={styles.container}>
@@ -37,6 +46,7 @@ export default function Home() {
           />
           <button>send</button>
         </form>
+        <button onClick={handleclick}>deneme</button>
       </div>
     </div>
   );
