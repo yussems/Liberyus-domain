@@ -16,7 +16,7 @@ export async function createUser(email, password) {
 
 export async function signIn(email, password) {
   try {
-    const sign = await signInWithEmailAndPassword(auth, email, password);
+    const sign = await signInWithEmailAndPassword(auth, `${email}@gmail.com`, password);
     console.log(sign.user);
   } catch (error) {
     console.log(error);
