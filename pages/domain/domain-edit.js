@@ -1,6 +1,11 @@
-import React from 'react';
+import React from "react";
+import { Card } from "antd";
+
+
 
 export default function DomainEdit() {
-  return <div>edit</div>;
+  return (
+    
+    <div>selam</div>
+  );
 }
-
