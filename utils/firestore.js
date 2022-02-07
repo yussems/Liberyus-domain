@@ -1,4 +1,4 @@
-import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 
 const colRef = collection(db,'domains')
@@ -10,12 +10,11 @@ export function addData(name,taken,days) {
         days:days
     })
 }
-export const  takeData = () => {
+export const  takeData = async () => {
     let domains = []
-    onSnapshot(colRef,snapShot=> {
-        snapShot.docs.forEach(res => {
+    const checkdata =  await getDocs(colRef)
+        checkdata.docs.forEach(res => {
             domains.push({...res.data(),id:res.id})
-        })
     })
     return domains
 } 

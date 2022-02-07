@@ -1,5 +1,5 @@
-import React from "react";
-import { Menu } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Menu } from "antd";
 import "antd/dist/antd.css";
 import styles from "../../styles/DomainEdit.module.css";
 
@@ -8,15 +8,15 @@ import Link from "next/link";
 import { takeData } from "../../utils/firestore";
 import Cards from "../../component/Cards";
 
- takeData().forEach(item => {
-    const {days,domainName,id,whereToTake} = item
-    return console.log(days);
- })
-
-console.log(takeData().length);
-
 export default function DomainEdit() {
-  return (
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    takeData().then((item) => setData(item));
+  }, []);
+
+
+return (
     <div className={styles.container}>
       <Menu mode="horizontal">
         <Menu.Item key="mail" icon={<MailOutlined />}>
@@ -24,15 +24,7 @@ export default function DomainEdit() {
         </Menu.Item>
       </Menu>
       <main className={styles.content}>
-        {
-        // takeData().forEach(item => {
-        //   const {days,domainName,id,whereToTake} = item
-        //   return(
-        //     <Cards key={id}  days={days} name={domainName} take={whereToTake}   />
-        //   )
-        // })
-      }
-      <Cards/>
+        <Cards data={data}/>
       </main>
     </div>
   );
