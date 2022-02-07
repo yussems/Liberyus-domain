@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, InputNumber, Button } from "antd";
-import { addData } from "../utils/firestore";
+import { addData, takeData } from "../utils/firestore";
 const layout = {
   labelCol: {
     span: 8,
@@ -12,9 +12,9 @@ const layout = {
 /* eslint-disable no-template-curly-in-string */
 
 const validateMessages = {
-  required: "${label} is required!",
+  required: "${label} boş bırakılamaz",
   types: {
-    email: "${label} is not a valid email!",
+    
     number: "${label} is not a valid number!",
   },
 };
@@ -28,10 +28,12 @@ function AddForm() {
     e.preventDefault();
     addData(domainName, taken, days);
 
-    setDays(" ");
+    setDays("");
     setDomainName("");
     setTaken("");
   };
+
+  
   return (
     <Form
       onSubmitCapture={DomainSubmit}
@@ -50,10 +52,14 @@ function AddForm() {
       >
         <Input value={domainName} onChange={(e) => setDomainName(e.target.value)} />
       </Form.Item>
-      <Form.Item name={["user", "email"]} label="Alındığı Yer">
+      <Form.Item label="Alındığı Yer">
         <Input value={taken} onChange={(e) => setTaken(e.target.value)} />
       </Form.Item>
-      <Form.Item name={["user", "age"]} label="Kaç Gün Kaldı">
+      <Form.Item name={["user", "age"]} label="Gün " rules={[
+          {
+            required: true,
+          },
+        ]}>
         <InputNumber value={days} onChange={(e) => setDays(e)} />
       </Form.Item>
 
