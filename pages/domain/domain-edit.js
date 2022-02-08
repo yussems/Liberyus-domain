@@ -15,7 +15,6 @@ export default function DomainEdit() {
     takeData().then((item) => setData(item));
   }, []);
 
-
 return (
     <div className={styles.container}>
       <Menu mode="horizontal">
