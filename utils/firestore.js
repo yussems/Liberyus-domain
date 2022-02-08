@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import {
   addDoc,
   collection,
@@ -11,12 +12,13 @@ import { db } from "../firebase";
 
 const colRef = collection(db, "domains");
 
-export function addData(name, taken, days) {
-  addDoc(colRef, {
+export async function addData(name, taken, days) {
+  const newPerson =  await addDoc(colRef, {
     domaninName: name,
     whereToTake: taken,
     days: days,
   });
+  return newPerson
 }
 export const takeData = async () => {
   let domains = [];

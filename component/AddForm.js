@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, InputNumber, Button, Space, message } from "antd";
 import { addData, takeData } from "../utils/firestore";
 const layout = {
@@ -22,20 +22,21 @@ function AddForm() {
   const [domainName, setDomainName] = useState("");
   const [taken, setTaken] = useState("");
   const [days, setDays] = useState(0);
+  const [newPerson, setNewPerson] = useState({});
 
   const DomainSubmit = (e) => {
     e.preventDefault();
-
     if (domainName && taken && days) {
-      addData(domainName, taken, days);
       message.success("This is a success message");
+      addData(domainName, taken, days).then((item) => setNewPerson(item.id));
+      setDays('')
+      setDomainName('')
+      setNewPerson('')
     }
-
-    setDays("");
-    setDomainName("");
-    setTaken("");
+    
   };
-
+  
+ 
   return (
     <Form
       onSubmitCapture={DomainSubmit}
@@ -72,7 +73,11 @@ function AddForm() {
         <InputNumber value={days} onChange={(e) => setDays(e)} />
       </Form.Item>
 
-      <Button block={true} type="primary" htmlType="submit">
+      <Button
+        block={true}
+        type="primary"
+        htmlType="submit"
+      >
         Submit
       </Button>
     </Form>

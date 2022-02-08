@@ -4,8 +4,7 @@ import styles from "../styles/Card.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteDomain } from "../utils/firestore";
 
-function Cards({ data ,setRender,render}) {
-  
+function Cards({ data, setRender, render }) {
   const idRef = useRef(null);
   const UpdateRef = useRef(null);
   const [inputState, setinputState] = useState(false);
@@ -48,23 +47,23 @@ function Cards({ data ,setRender,render}) {
   }
 
   const domainDelete = (id) => {
-
     data.map((item) => {
-      if(item.id === id) {
-        deleteDomain(id)
-        setRender(!render)
+      if (item.id === id) {
+        deleteDomain(id);
+        setRender(!render);
       }
-    })
-     
+    });
   };
 
-  const handleEdit = (e) => {
-    console.log(e);
+  const handleEdit = (id) => {
     setinputState(!inputState);
+    // (item.id === id ? setinputState(!inputState) : null)
+    console.log(id)
+    // data.map((item) => console.log(item.id));
 
-    if (updatedomainName && updatedays && updateTaken) {
-      updateDomain(idRef.current.id, updatedomainName, updatedays, updateTaken);
-    }
+    // if (updatedomainName && updatedays && updateTaken) {
+    //   updateDomain(id, updatedomainName, updatedays, updateTaken);
+    // }
   };
 
   return (
@@ -75,7 +74,7 @@ function Cards({ data ,setRender,render}) {
         colorState(days);
 
         return (
-          <div key={id}  className={styles.card}>
+          <div key={id} className={styles.card}>
             <Card
               headStyle={{ backgroundColor: color }}
               title={domaninName}
@@ -109,7 +108,7 @@ function Cards({ data ,setRender,render}) {
               style={{ width: 500, borderTop: "none" }}
               bodyStyle={{ display: "none" }}
               actions={[
-                <EditOutlined onClick={(e) => handleEdit(e)} key="edit" />,
+                <EditOutlined onClick={() => handleEdit(id)} key="edit" />,
                 <DeleteOutlined
                   onClick={() => domainDelete(id)}
                   key="delete"
