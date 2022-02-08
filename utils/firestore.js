@@ -5,6 +5,7 @@ import {
   doc,
   getDocs,
   onSnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -23,10 +24,20 @@ export const takeData = async () => {
   checkdata.docs.forEach((res) => {
     domains.push({ ...res.data(), id: res.id });
   });
-  return domains;
+  return domains
 };
 
 export const deleteDomain = async (id) => {
   const docref = doc(colRef, id);
   await deleteDoc(docref);
 };
+
+export const updateDomain = (updateID,NewDomainName,newDays,newTaken) => {
+  const deleteRef = doc(colRef,updateID) 
+
+  updateDoc(deleteRef,{
+      domaninName: NewDomainName,
+      days:newDays,
+      whereToTake: newTaken,
+  })
+}
