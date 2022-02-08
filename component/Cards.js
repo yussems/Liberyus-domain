@@ -1,33 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, message, Space } from "antd";
+import { Card, message } from "antd";
 import styles from "../styles/Card.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-// import { deleteDomain } from "../utils/firestore";
-import { collection, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
+import { deleteDomain } from "../utils/firestore";
 
 function Cards({ data }) {
   const idRef = useRef(null);
-  const [deleten, setDeleten] = useState(false);
   let color = "";
 
-  const colRef = collection(db, "domains");
+  // useEffect(() => {
+  //   if (deleten) {
+  //     const deleteDoc = deleteDomain(idRef);
+  //     setDeleten(false)
+  //   }
 
-  const deleteDomain = async (id) => {
-    const docref = doc(colRef, id);
-    await deleteDoc(docref);
-  };
+  //   return () => deleteDoc
+
+  // }, [idRef]);
+
+  
   useEffect(() => {
-    if (deleten) {
-      deleteDomain(idRef);
-    }
-  }, [idRef]);
-
-  const warningEffect = (days, domaninName) => {
-    if (days < 15) {
-      message.warning(`${domaninName} süresi az 15 günden az kalmıştır`);
-    }
-  };
+    data.filter((item) =>
+      item.days < 15
+        ? message.warning(
+            `${item.domaninName} süresi az 15 günden az kalmıştır`
+          )
+        : null
+    );
+  }, [data]);
 
   function colorState(days) {
     if (days < 15) {
@@ -43,14 +43,14 @@ function Cards({ data }) {
 
   const domainDelete = () => {
     deleteDomain(idRef.current.id);
-    setDeleten(true);
   };
   return (
     <div className={styles.wrapper}>
       {data.map((element) => {
         const { days, domaninName, id, whereToTake } = element;
+
         colorState(days);
-        warningEffect(days, domaninName);
+
         return (
           <div key={id} ref={idRef} id={id} className={styles.card}>
             <Card
