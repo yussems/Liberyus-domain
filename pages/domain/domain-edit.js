@@ -10,12 +10,17 @@ import Cards from "../../component/Cards";
 
 export default function DomainEdit() {
   const [data, setData] = useState([]);
+  const [inputState, setinputState] = useState(false);
 
   useEffect(() => {
     takeData().then((item) => setData(item));
   }, []);
 
-return (
+  const handleEdit = (e) => {
+    setinputState(true);
+  };
+  console.log(inputState);
+  return (
     <div className={styles.container}>
       <Menu mode="horizontal">
         <Menu.Item key="mail" icon={<MailOutlined />}>
@@ -23,7 +28,7 @@ return (
         </Menu.Item>
       </Menu>
       <main className={styles.content}>
-        <Cards data={data}/>
+        <Cards inputState={inputState} handleEdit={handleEdit} data={data} />
       </main>
     </div>
   );

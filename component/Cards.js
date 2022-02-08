@@ -4,8 +4,11 @@ import styles from "../styles/Card.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteDomain } from "../utils/firestore";
 
-function Cards({ data }) {
+function Cards({ data, handleEdit, inputState }) {
   const idRef = useRef(null);
+  const [updatedomainName, setUpdatedomainName] = useState("");
+  const [updatedays, setUpdateDays] = useState("");
+  const [updateTaken, setUpdateTaken] = useState("");
   let color = "";
 
   // useEffect(() => {
@@ -18,7 +21,6 @@ function Cards({ data }) {
 
   // }, [idRef]);
 
-  
   useEffect(() => {
     data.filter((item) =>
       item.days < 15
@@ -44,6 +46,7 @@ function Cards({ data }) {
   const domainDelete = () => {
     deleteDomain(idRef.current.id);
   };
+
   return (
     <div className={styles.wrapper}>
       {data.map((element) => {
@@ -53,11 +56,11 @@ function Cards({ data }) {
 
         return (
           <div key={id} ref={idRef} id={id} className={styles.card}>
-            <Card
+            {inputState ? <p>hello</p> :  <Card
               headStyle={{ backgroundColor: color }}
               title={domaninName}
               bordered={true}
-              style={{ width: 500, height: 200 }}
+              style={{ width: 500, height: 250 }}
             >
               <p>
                 <span>Domain Adı:</span> {domaninName || "Veri girilmedi"}
@@ -68,12 +71,13 @@ function Cards({ data }) {
               <p>
                 <span>Nereden alındı:</span> {whereToTake || "Veri girilmedi"}
               </p>
-            </Card>
+            </Card>}
+
             <Card
               style={{ width: 500, borderTop: "none" }}
               bodyStyle={{ display: "none" }}
               actions={[
-                <EditOutlined key="edit" />,
+                <EditOutlined onClick={() => handleEdit()} key="edit" />,
                 <DeleteOutlined onClick={domainDelete} key="delete" />,
               ]}
             ></Card>
