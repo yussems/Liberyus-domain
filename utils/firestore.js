@@ -26,7 +26,7 @@ export const takeData = async () => {
   return domains;
 };
 
-export const deleteDomain = async (id) => {
-  const docref = doc(colRef, id);
-  await deleteDoc(docref);
-};
+// export const deleteDomain = async (id) => {
+//   const docref = doc(colRef, id);
+//   await deleteDoc(docref);
+// };

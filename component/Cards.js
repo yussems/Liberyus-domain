@@ -2,44 +2,55 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, message, Space } from "antd";
 import styles from "../styles/Card.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { deleteDomain } from "../utils/firestore";
+// import { deleteDomain } from "../utils/firestore";
+import { collection, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Cards({ data }) {
   const idRef = useRef(null);
+  const [deleten, setDeleten] = useState(false);
+  let color = "";
 
-  const warningEffect = (days,domaninName) => {
+  const colRef = collection(db, "domains");
+
+  const deleteDomain = async (id) => {
+    const docref = doc(colRef, id);
+    await deleteDoc(docref);
+  };
+  useEffect(() => {
+    if (deleten) {
+      deleteDomain(idRef);
+    }
+  }, [idRef]);
+
+  const warningEffect = (days, domaninName) => {
     if (days < 15) {
       message.warning(`${domaninName} süresi az 15 günden az kalmıştır`);
     }
   };
 
-  let color = "";
   function colorState(days) {
-        
-        if (days < 15) {
-          color = "red";
-        }
-        if (days > 15 && days < 60) {
-          color = "orange";
-        }
-        if (days > 60) {
-          color = "green";
-        }
+    if (days < 15) {
+      color = "red";
+    }
+    if (days > 15 && days < 60) {
+      color = "orange";
+    }
+    if (days > 60) {
+      color = "green";
+    }
   }
-  // useEffect(() => {
-  //   warningEffect(days)
-  // }, []);
 
-  console.log();
   const domainDelete = () => {
     deleteDomain(idRef.current.id);
+    setDeleten(true);
   };
   return (
     <div className={styles.wrapper}>
       {data.map((element) => {
         const { days, domaninName, id, whereToTake } = element;
-        colorState(days)
-        warningEffect(days,domaninName)
+        colorState(days);
+        warningEffect(days, domaninName);
         return (
           <div key={id} ref={idRef} id={id} className={styles.card}>
             <Card
