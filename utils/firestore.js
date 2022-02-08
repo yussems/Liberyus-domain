@@ -34,10 +34,10 @@ export const deleteDomain = async (id) => {
   await deleteDoc(docref);
 };
 
-export const updateDomain = (updateID,NewDomainName,newDays,newTaken) => {
+export const updateDomain = async (updateID,NewDomainName,newDays,newTaken) => {
   const deleteRef = doc(colRef,updateID) 
 
-  updateDoc(deleteRef,{
+  await updateDoc(deleteRef,{
       domaninName: NewDomainName,
       days:newDays,
       whereToTake: newTaken,

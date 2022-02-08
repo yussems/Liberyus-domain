@@ -13,11 +13,8 @@ export default function DomainEdit() {
   const [render, setRender] = useState(false);
 
   useEffect(() => {
-    if (data) {
       takeData().then((item) => setData(item));
-    }
   }, [render]);
-  console.log(render);
 
   return (
     <div className={styles.container}>

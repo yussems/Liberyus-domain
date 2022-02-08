@@ -27,16 +27,16 @@ function AddForm() {
   const DomainSubmit = (e) => {
     e.preventDefault();
     if (domainName && taken && days) {
-      message.success("This is a success message");
       addData(domainName, taken, days).then((item) => setNewPerson(item.id));
-      setDays('')
-      setDomainName('')
-      setNewPerson('')
+      message.success("This is a success message");
+
+      setDays("");
+      setDomainName("");
+      setNewPerson("");
     }
-    
   };
   
- 
+
   return (
     <Form
       onSubmitCapture={DomainSubmit}
@@ -73,11 +73,7 @@ function AddForm() {
         <InputNumber value={days} onChange={(e) => setDays(e)} />
       </Form.Item>
 
-      <Button
-        block={true}
-        type="primary"
-        htmlType="submit"
-      >
+      <Button block={true} type="primary" htmlType="submit">
         Submit
       </Button>
     </Form>
