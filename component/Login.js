@@ -10,7 +10,6 @@ function Login() {
   const { loginEmailandPassword, error, loading, user } = useUserContext();
   const router = useRouter();
 
-  console.log(error);
 
   const handleSubmit = (e) => {
     e.preventDefault();
