@@ -10,16 +10,14 @@ import Cards from "../../component/Cards";
 
 export default function DomainEdit() {
   const [data, setData] = useState([]);
+  const [render, setRender] = useState(false);
 
-  
-  // useEffect(() => {
-    // if (data) {
-      //   takeData().then((item) => setData(item));
-      // }
-      // }, []);
-// takeData().then(item => setData(item))
-
-// console.log(data);
+  useEffect(() => {
+    if (data) {
+      takeData().then((item) => setData(item));
+    }
+  }, [render]);
+  console.log(render);
 
   return (
     <div className={styles.container}>
@@ -29,7 +27,7 @@ export default function DomainEdit() {
         </Menu.Item>
       </Menu>
       <main className={styles.content}>
-        <Cards data={data} />
+        <Cards setRender={setRender} render={render} data={data} />
       </main>
     </div>
   );

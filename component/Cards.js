@@ -4,7 +4,8 @@ import styles from "../styles/Card.module.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { deleteDomain } from "../utils/firestore";
 
-function Cards({ data }) {
+function Cards({ data ,setRender,render}) {
+  
   const idRef = useRef(null);
   const UpdateRef = useRef(null);
   const [inputState, setinputState] = useState(false);
@@ -48,10 +49,13 @@ function Cards({ data }) {
 
   const domainDelete = (id) => {
 
-    data.map((item) =>
-      item.id === id ? deleteDomain(id) : null
-    );
-
+    data.map((item) => {
+      if(item.id === id) {
+        deleteDomain(id)
+        setRender(!render)
+      }
+    })
+     
   };
 
   const handleEdit = (e) => {
